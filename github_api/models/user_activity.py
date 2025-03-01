@@ -4,16 +4,15 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional, Union
 
-from pydantic import AnyUrl, BaseModel, Field
+from pydantic import AnyUrl, BaseModel, Field, RootModel
 
 
 class Actor(BaseModel):
     id: int
     login: str
-    display_login: Optional[str] = None
-    gravatar_id: Optional[str]
+    display_login: str | None = None
+    gravatar_id: str | None
     url: AnyUrl
     avatar_url: AnyUrl
 
@@ -27,8 +26,8 @@ class Repo(BaseModel):
 class Org(BaseModel):
     id: int
     login: str
-    display_login: Optional[str] = None
-    gravatar_id: Optional[str]
+    display_login: str | None = None
+    gravatar_id: str | None
     url: AnyUrl
     avatar_url: AnyUrl
 
@@ -41,15 +40,15 @@ class StateReason(Enum):
 
 
 class User(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
+    name: str | None = None
+    email: str | None = None
     login: str = Field(..., examples=["octocat"])
     id: int = Field(..., examples=[1])
     node_id: str = Field(..., examples=["MDQ6VXNlcjE="])
     avatar_url: AnyUrl = Field(
         ..., examples=["https://github.com/images/error/octocat_happy.gif"]
     )
-    gravatar_id: Optional[str] = Field(
+    gravatar_id: str | None = Field(
         ..., examples=["41d064eb2195891e12d0413f63227ea7"]
     )
     url: AnyUrl = Field(..., examples=["https://api.github.com/users/octocat"])
@@ -89,32 +88,30 @@ class User(BaseModel):
     )
     type: str = Field(..., examples=["User"])
     site_admin: bool
-    starred_at: Optional[str] = Field(
-        None, examples=['"2020-07-09T00:17:55Z"']
-    )
-    user_view_type: Optional[str] = Field(None, examples=["public"])
+    starred_at: str | None = Field(None, examples=['"2020-07-09T00:17:55Z"'])
+    user_view_type: str | None = Field(None, examples=["public"])
 
 
 class Labels(BaseModel):
-    id: Optional[int] = None
-    node_id: Optional[str] = None
-    url: Optional[AnyUrl] = None
-    name: Optional[str] = None
-    description: Optional[str] = None
-    color: Optional[str] = None
-    default: Optional[bool] = None
+    id: int | None = None
+    node_id: str | None = None
+    url: AnyUrl | None = None
+    name: str | None = None
+    description: str | None = None
+    color: str | None = None
+    default: bool | None = None
 
 
 class Assignee(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
+    name: str | None = None
+    email: str | None = None
     login: str = Field(..., examples=["octocat"])
     id: int = Field(..., examples=[1])
     node_id: str = Field(..., examples=["MDQ6VXNlcjE="])
     avatar_url: AnyUrl = Field(
         ..., examples=["https://github.com/images/error/octocat_happy.gif"]
     )
-    gravatar_id: Optional[str] = Field(
+    gravatar_id: str | None = Field(
         ..., examples=["41d064eb2195891e12d0413f63227ea7"]
     )
     url: AnyUrl = Field(..., examples=["https://api.github.com/users/octocat"])
@@ -154,10 +151,8 @@ class Assignee(BaseModel):
     )
     type: str = Field(..., examples=["User"])
     site_admin: bool
-    starred_at: Optional[str] = Field(
-        None, examples=['"2020-07-09T00:17:55Z"']
-    )
-    user_view_type: Optional[str] = Field(None, examples=["public"])
+    starred_at: str | None = Field(None, examples=['"2020-07-09T00:17:55Z"'])
+    user_view_type: str | None = Field(None, examples=["public"])
 
 
 class State(Enum):
@@ -166,15 +161,15 @@ class State(Enum):
 
 
 class Creator(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
+    name: str | None = None
+    email: str | None = None
     login: str = Field(..., examples=["octocat"])
     id: int = Field(..., examples=[1])
     node_id: str = Field(..., examples=["MDQ6VXNlcjE="])
     avatar_url: AnyUrl = Field(
         ..., examples=["https://github.com/images/error/octocat_happy.gif"]
     )
-    gravatar_id: Optional[str] = Field(
+    gravatar_id: str | None = Field(
         ..., examples=["41d064eb2195891e12d0413f63227ea7"]
     )
     url: AnyUrl = Field(..., examples=["https://api.github.com/users/octocat"])
@@ -214,10 +209,8 @@ class Creator(BaseModel):
     )
     type: str = Field(..., examples=["User"])
     site_admin: bool
-    starred_at: Optional[str] = Field(
-        None, examples=['"2020-07-09T00:17:55Z"']
-    )
-    user_view_type: Optional[str] = Field(None, examples=["public"])
+    starred_at: str | None = Field(None, examples=['"2020-07-09T00:17:55Z"'])
+    user_view_type: str | None = Field(None, examples=["public"])
 
 
 class Milestone(BaseModel):
@@ -249,38 +242,36 @@ class Milestone(BaseModel):
     title: str = Field(
         ..., description="The title of the milestone.", examples=["v1.0"]
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         ..., examples=["Tracking milestone for version 1.0"]
     )
-    creator: Optional[Creator]
+    creator: Creator | None
     open_issues: int = Field(..., examples=[4])
     closed_issues: int = Field(..., examples=[8])
     created_at: datetime = Field(..., examples=["2011-04-10T20:09:31Z"])
     updated_at: datetime = Field(..., examples=["2014-03-03T18:58:10Z"])
-    closed_at: Optional[datetime] = Field(
-        ..., examples=["2013-02-12T13:22:01Z"]
-    )
-    due_on: Optional[datetime] = Field(..., examples=["2012-10-09T23:39:01Z"])
+    closed_at: datetime | None = Field(..., examples=["2013-02-12T13:22:01Z"])
+    due_on: datetime | None = Field(..., examples=["2012-10-09T23:39:01Z"])
 
 
 class PullRequest(BaseModel):
-    merged_at: Optional[datetime] = None
-    diff_url: Optional[AnyUrl]
-    html_url: Optional[AnyUrl]
-    patch_url: Optional[AnyUrl]
-    url: Optional[AnyUrl]
+    merged_at: datetime | None = None
+    diff_url: AnyUrl | None
+    html_url: AnyUrl | None
+    patch_url: AnyUrl | None
+    url: AnyUrl | None
 
 
 class ClosedBy(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
+    name: str | None = None
+    email: str | None = None
     login: str = Field(..., examples=["octocat"])
     id: int = Field(..., examples=[1])
     node_id: str = Field(..., examples=["MDQ6VXNlcjE="])
     avatar_url: AnyUrl = Field(
         ..., examples=["https://github.com/images/error/octocat_happy.gif"]
     )
-    gravatar_id: Optional[str] = Field(
+    gravatar_id: str | None = Field(
         ..., examples=["41d064eb2195891e12d0413f63227ea7"]
     )
     url: AnyUrl = Field(..., examples=["https://api.github.com/users/octocat"])
@@ -320,84 +311,27 @@ class ClosedBy(BaseModel):
     )
     type: str = Field(..., examples=["User"])
     site_admin: bool
-    starred_at: Optional[str] = Field(
-        None, examples=['"2020-07-09T00:17:55Z"']
-    )
-    user_view_type: Optional[str] = Field(None, examples=["public"])
+    starred_at: str | None = Field(None, examples=['"2020-07-09T00:17:55Z"'])
+    user_view_type: str | None = Field(None, examples=["public"])
 
 
 class License(BaseModel):
     key: str = Field(..., examples=["mit"])
     name: str = Field(..., examples=["MIT License"])
-    url: Optional[AnyUrl] = Field(
+    url: AnyUrl | None = Field(
         ..., examples=["https://api.github.com/licenses/mit"]
     )
-    spdx_id: Optional[str] = Field(..., examples=["MIT"])
+    spdx_id: str | None = Field(..., examples=["MIT"])
     node_id: str = Field(..., examples=["MDc6TGljZW5zZW1pdA=="])
-    html_url: Optional[AnyUrl] = None
+    html_url: AnyUrl | None = None
 
 
 class Permissions(BaseModel):
     admin: bool
     pull: bool
-    triage: Optional[bool] = None
+    triage: bool | None = None
     push: bool
-    maintain: Optional[bool] = None
-
-
-class Owner(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
-    login: str = Field(..., examples=["octocat"])
-    id: int = Field(..., examples=[1])
-    node_id: str = Field(..., examples=["MDQ6VXNlcjE="])
-    avatar_url: AnyUrl = Field(
-        ..., examples=["https://github.com/images/error/octocat_happy.gif"]
-    )
-    gravatar_id: Optional[str] = Field(
-        ..., examples=["41d064eb2195891e12d0413f63227ea7"]
-    )
-    url: AnyUrl = Field(..., examples=["https://api.github.com/users/octocat"])
-    html_url: AnyUrl = Field(..., examples=["https://github.com/octocat"])
-    followers_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/followers"]
-    )
-    following_url: str = Field(
-        ...,
-        examples=[
-            "https://api.github.com/users/octocat/following{/other_user}"
-        ],
-    )
-    gists_url: str = Field(
-        ..., examples=["https://api.github.com/users/octocat/gists{/gist_id}"]
-    )
-    starred_url: str = Field(
-        ...,
-        examples=[
-            "https://api.github.com/users/octocat/starred{/owner}{/repo}"
-        ],
-    )
-    subscriptions_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/subscriptions"]
-    )
-    organizations_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/orgs"]
-    )
-    repos_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/repos"]
-    )
-    events_url: str = Field(
-        ..., examples=["https://api.github.com/users/octocat/events{/privacy}"]
-    )
-    received_events_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/received_events"]
-    )
-    type: str = Field(..., examples=["User"])
-    site_admin: bool
-    starred_at: Optional[str] = Field(
-        None, examples=['"2020-07-09T00:17:55Z"']
-    )
-    user_view_type: Optional[str] = Field(None, examples=["public"])
+    maintain: bool | None = None
 
 
 class SquashMergeCommitTitle(Enum):
@@ -422,6 +356,88 @@ class MergeCommitMessage(Enum):
     BLANK = "BLANK"
 
 
+class UserOwner(BaseModel):
+    name: str | None = None
+    email: str | None = None
+    login: str = Field(..., examples=["octocat"])
+    id: int = Field(..., examples=[1])
+    node_id: str = Field(..., examples=["MDQ6VXNlcjE="])
+    avatar_url: AnyUrl = Field(
+        ..., examples=["https://github.com/images/error/octocat_happy.gif"]
+    )
+    gravatar_id: str | None = Field(
+        ..., examples=["41d064eb2195891e12d0413f63227ea7"]
+    )
+    url: AnyUrl = Field(..., examples=["https://api.github.com/users/octocat"])
+    html_url: AnyUrl = Field(..., examples=["https://github.com/octocat"])
+    followers_url: AnyUrl = Field(
+        ..., examples=["https://api.github.com/users/octocat/followers"]
+    )
+    following_url: str = Field(
+        ...,
+        examples=[
+            "https://api.github.com/users/octocat/following{/other_user}"
+        ],
+    )
+    gists_url: str = Field(
+        ..., examples=["https://api.github.com/users/octocat/gists{/gist_id}"]
+    )
+    starred_url: str = Field(
+        ...,
+        examples=[
+            "https://api.github.com/users/octocat/starred{/owner}{/repo}"
+        ],
+    )
+    subscriptions_url: AnyUrl = Field(
+        ..., examples=["https://api.github.com/users/octocat/subscriptions"]
+    )
+    organizations_url: AnyUrl = Field(
+        ..., examples=["https://api.github.com/users/octocat/orgs"]
+    )
+    repos_url: AnyUrl = Field(
+        ..., examples=["https://api.github.com/users/octocat/repos"]
+    )
+    events_url: str = Field(
+        ..., examples=["https://api.github.com/users/octocat/events{/privacy}"]
+    )
+    received_events_url: AnyUrl = Field(
+        ..., examples=["https://api.github.com/users/octocat/received_events"]
+    )
+    type: str = Field(..., examples=["User"])
+    site_admin: bool
+    starred_at: str | None = Field(None, examples=['"2020-07-09T00:17:55Z"'])
+    user_view_type: str | None = Field(None, examples=["public"])
+
+
+class BusinessOwner(BaseModel):
+    description: str | None = Field(
+        None, description="A short description of the enterprise."
+    )
+    html_url: AnyUrl = Field(
+        ..., examples=["https://github.com/enterprises/octo-business"]
+    )
+    website_url: AnyUrl | None = Field(
+        None, description="The enterprise's website URL."
+    )
+    id: int = Field(
+        ..., description="Unique identifier of the enterprise", examples=[42]
+    )
+    node_id: str = Field(..., examples=["MDEwOlJlcG9zaXRvcnkxMjk2MjY5"])
+    name: str = Field(
+        ...,
+        description="The name of the enterprise.",
+        examples=["Octo Business"],
+    )
+    slug: str = Field(
+        ...,
+        description="The slug url identifier for the enterprise.",
+        examples=["octo-business"],
+    )
+    created_at: datetime | None = Field(..., examples=["2019-01-26T19:01:12Z"])
+    updated_at: datetime | None = Field(..., examples=["2019-01-26T19:14:43Z"])
+    avatar_url: AnyUrl
+
+
 class Repository(BaseModel):
     id: int = Field(
         ..., description="Unique identifier of the repository", examples=[42]
@@ -433,10 +449,10 @@ class Repository(BaseModel):
         examples=["Team Environment"],
     )
     full_name: str = Field(..., examples=["octocat/Hello-World"])
-    license: Optional[License]
+    license: License | None
     forks: int
-    permissions: Optional[Permissions] = None
-    owner: Owner = Field(
+    permissions: Permissions | None = None
+    owner: UserOwner = Field(
         ..., description="A GitHub user.", title="Simple User"
     )
     private: bool = Field(
@@ -445,7 +461,7 @@ class Repository(BaseModel):
     html_url: AnyUrl = Field(
         ..., examples=["https://github.com/octocat/Hello-World"]
     )
-    description: Optional[str] = Field(..., examples=["This your first repo!"])
+    description: str | None = Field(..., examples=["This your first repo!"])
     fork: bool
     url: AnyUrl = Field(
         ..., examples=["https://api.github.com/repos/octocat/Hello-World"]
@@ -659,7 +675,7 @@ class Repository(BaseModel):
     clone_url: str = Field(
         ..., examples=["https://github.com/octocat/Hello-World.git"]
     )
-    mirror_url: Optional[AnyUrl] = Field(
+    mirror_url: AnyUrl | None = Field(
         ..., examples=["git:git.example.com/octocat/Hello-World"]
     )
     hooks_url: AnyUrl = Field(
@@ -668,8 +684,8 @@ class Repository(BaseModel):
     svn_url: AnyUrl = Field(
         ..., examples=["https://svn.github.com/octocat/Hello-World"]
     )
-    homepage: Optional[AnyUrl] = Field(..., examples=["https://github.com"])
-    language: Optional[str]
+    homepage: AnyUrl | None = Field(..., examples=["https://github.com"])
+    language: str | None
     forks_count: int = Field(..., examples=[9])
     stargazers_count: int = Field(..., examples=[80])
     watchers_count: int = Field(..., examples=[80])
@@ -687,7 +703,7 @@ class Repository(BaseModel):
         examples=["master"],
     )
     open_issues_count: int = Field(..., examples=[0])
-    is_template: Optional[bool] = Field(
+    is_template: bool | None = Field(
         False,
         description=(
             "Whether this repository acts as a template that can be used to"
@@ -695,7 +711,7 @@ class Repository(BaseModel):
         ),
         examples=[True],
     )
-    topics: Optional[List[str]] = None
+    topics: list[str] | None = None
     has_issues: bool = Field(
         ..., description="Whether issues are enabled.", examples=[True]
     )
@@ -709,7 +725,7 @@ class Repository(BaseModel):
     has_downloads: bool = Field(
         ..., description="Whether downloads are enabled.", examples=[True]
     )
-    has_discussions: Optional[bool] = Field(
+    has_discussions: bool | None = Field(
         False, description="Whether discussions are enabled.", examples=[True]
     )
     archived: bool = Field(
@@ -718,43 +734,37 @@ class Repository(BaseModel):
     disabled: bool = Field(
         ..., description="Returns whether or not this repository disabled."
     )
-    visibility: Optional[str] = Field(
+    visibility: str | None = Field(
         "public",
         description="The repository visibility: public, private, or internal.",
     )
-    pushed_at: Optional[datetime] = Field(
-        ..., examples=["2011-01-26T19:06:43Z"]
-    )
-    created_at: Optional[datetime] = Field(
-        ..., examples=["2011-01-26T19:01:12Z"]
-    )
-    updated_at: Optional[datetime] = Field(
-        ..., examples=["2011-01-26T19:14:43Z"]
-    )
-    allow_rebase_merge: Optional[bool] = Field(
+    pushed_at: datetime | None = Field(..., examples=["2011-01-26T19:06:43Z"])
+    created_at: datetime | None = Field(..., examples=["2011-01-26T19:01:12Z"])
+    updated_at: datetime | None = Field(..., examples=["2011-01-26T19:14:43Z"])
+    allow_rebase_merge: bool | None = Field(
         True,
         description="Whether to allow rebase merges for pull requests.",
         examples=[True],
     )
-    temp_clone_token: Optional[str] = None
-    allow_squash_merge: Optional[bool] = Field(
+    temp_clone_token: str | None = None
+    allow_squash_merge: bool | None = Field(
         True,
         description="Whether to allow squash merges for pull requests.",
         examples=[True],
     )
-    allow_auto_merge: Optional[bool] = Field(
+    allow_auto_merge: bool | None = Field(
         False,
         description="Whether to allow Auto-merge to be used on pull requests.",
         examples=[False],
     )
-    delete_branch_on_merge: Optional[bool] = Field(
+    delete_branch_on_merge: bool | None = Field(
         False,
         description=(
             "Whether to delete head branches when pull requests are merged"
         ),
         examples=[False],
     )
-    allow_update_branch: Optional[bool] = Field(
+    allow_update_branch: bool | None = Field(
         False,
         description=(
             "Whether or not a pull request head branch that is behind its base"
@@ -763,7 +773,7 @@ class Repository(BaseModel):
         ),
         examples=[False],
     )
-    use_squash_pr_title_as_default: Optional[bool] = Field(
+    use_squash_pr_title_as_default: bool | None = Field(
         False,
         description=(
             "Whether a squash merge commit can use the pull request title as"
@@ -771,7 +781,7 @@ class Repository(BaseModel):
             " `squash_merge_commit_title` instead."
         ),
     )
-    squash_merge_commit_title: Optional[SquashMergeCommitTitle] = Field(
+    squash_merge_commit_title: SquashMergeCommitTitle | None = Field(
         None,
         description=(
             "The default value for a squash merge commit title:\n\n-"
@@ -781,7 +791,7 @@ class Repository(BaseModel):
             " commit)."
         ),
     )
-    squash_merge_commit_message: Optional[SquashMergeCommitMessage] = Field(
+    squash_merge_commit_message: SquashMergeCommitMessage | None = Field(
         None,
         description=(
             "The default value for a squash merge commit message:\n\n-"
@@ -790,7 +800,7 @@ class Repository(BaseModel):
             " `BLANK` - default to a blank commit message."
         ),
     )
-    merge_commit_title: Optional[MergeCommitTitle] = Field(
+    merge_commit_title: MergeCommitTitle | None = Field(
         None,
         description=(
             "The default value for a merge commit title.\n\n- `PR_TITLE` -"
@@ -799,7 +809,7 @@ class Repository(BaseModel):
             " pull request #123 from branch-name)."
         ),
     )
-    merge_commit_message: Optional[MergeCommitMessage] = Field(
+    merge_commit_message: MergeCommitMessage | None = Field(
         None,
         description=(
             "The default value for a merge commit message.\n\n- `PR_TITLE` -"
@@ -808,15 +818,15 @@ class Repository(BaseModel):
             " message."
         ),
     )
-    allow_merge_commit: Optional[bool] = Field(
+    allow_merge_commit: bool | None = Field(
         True,
         description="Whether to allow merge commits for pull requests.",
         examples=[True],
     )
-    allow_forking: Optional[bool] = Field(
+    allow_forking: bool | None = Field(
         None, description="Whether to allow forking this repo"
     )
-    web_commit_signoff_required: Optional[bool] = Field(
+    web_commit_signoff_required: bool | None = Field(
         False,
         description=(
             "Whether to require contributors to sign off on web-based commits"
@@ -824,11 +834,9 @@ class Repository(BaseModel):
     )
     open_issues: int
     watchers: int
-    master_branch: Optional[str] = None
-    starred_at: Optional[str] = Field(
-        None, examples=['"2020-07-09T00:17:42Z"']
-    )
-    anonymous_access_enabled: Optional[bool] = Field(
+    master_branch: str | None = None
+    starred_at: str | None = Field(None, examples=['"2020-07-09T00:17:42Z"'])
+    anonymous_access_enabled: bool | None = Field(
         None,
         description=(
             "Whether anonymous git access is enabled for this repository"
@@ -836,65 +844,32 @@ class Repository(BaseModel):
     )
 
 
-class Owner2(BaseModel):
-    description: Optional[str] = Field(
-        None, description="A short description of the enterprise."
-    )
-    html_url: AnyUrl = Field(
-        ..., examples=["https://github.com/enterprises/octo-business"]
-    )
-    website_url: Optional[AnyUrl] = Field(
-        None, description="The enterprise's website URL."
-    )
-    id: int = Field(
-        ..., description="Unique identifier of the enterprise", examples=[42]
-    )
-    node_id: str = Field(..., examples=["MDEwOlJlcG9zaXRvcnkxMjk2MjY5"])
-    name: str = Field(
-        ...,
-        description="The name of the enterprise.",
-        examples=["Octo Business"],
-    )
-    slug: str = Field(
-        ...,
-        description="The slug url identifier for the enterprise.",
-        examples=["octo-business"],
-    )
-    created_at: Optional[datetime] = Field(
-        ..., examples=["2019-01-26T19:01:12Z"]
-    )
-    updated_at: Optional[datetime] = Field(
-        ..., examples=["2019-01-26T19:14:43Z"]
-    )
-    avatar_url: AnyUrl
-
-
 class Permissions1(BaseModel):
-    issues: Optional[str] = None
-    checks: Optional[str] = None
-    metadata: Optional[str] = None
-    contents: Optional[str] = None
-    deployments: Optional[str] = None
+    issues: str | None = None
+    checks: str | None = None
+    metadata: str | None = None
+    contents: str | None = None
+    deployments: str | None = None
 
 
 class PerformedViaGithubApp(BaseModel):
     id: int = Field(
         ..., description="Unique identifier of the GitHub app", examples=[37]
     )
-    slug: Optional[str] = Field(
+    slug: str | None = Field(
         None,
         description="The slug name of the GitHub app",
         examples=["probot-owners"],
     )
     node_id: str = Field(..., examples=["MDExOkludGVncmF0aW9uMQ=="])
-    client_id: Optional[str] = Field(None, examples=['"Iv1.25b5d1e65ffc4022"'])
-    owner: Union[Owner, Owner2]
+    client_id: str | None = Field(None, examples=['"Iv1.25b5d1e65ffc4022"'])
+    owner: UserOwner | BusinessOwner
     name: str = Field(
         ...,
         description="The name of the GitHub app",
         examples=["Probot Owners"],
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         ..., examples=["The description of the app."]
     )
     external_url: AnyUrl = Field(..., examples=["https://example.com"])
@@ -908,25 +883,25 @@ class PerformedViaGithubApp(BaseModel):
         description="The set of permissions for the GitHub app",
         examples=[{"issues": "read", "deployments": "write"}],
     )
-    events: List[str] = Field(
+    events: list[str] = Field(
         ...,
         description="The list of events for the GitHub app",
         examples=["label", "deployment"],
     )
-    installations_count: Optional[int] = Field(
+    installations_count: int | None = Field(
         None,
         description=(
             "The number of installations associated with the GitHub app"
         ),
         examples=[5],
     )
-    client_secret: Optional[str] = Field(
+    client_secret: str | None = Field(
         None, examples=['"1d4b2097ac622ba702d19de498f005747a8b21d3"']
     )
-    webhook_secret: Optional[str] = Field(
+    webhook_secret: str | None = Field(
         None, examples=['"6fba8f2fc8a7e8f2cca5577eddd82ca7586b3b6b"']
     )
-    pem: Optional[str] = Field(None)
+    pem: str | None = Field(None)
 
 
 class AuthorAssociation(Enum):
@@ -984,7 +959,7 @@ class Issue(BaseModel):
         description="State of the issue; either 'open' or 'closed'",
         examples=["open"],
     )
-    state_reason: Optional[StateReason] = Field(
+    state_reason: StateReason | None = Field(
         None,
         description="The reason for the current state",
         examples=["not_planned"],
@@ -994,7 +969,7 @@ class Issue(BaseModel):
         description="Title of the issue",
         examples=["Widget creation fails in Safari on OS X 10.8"],
     )
-    body: Optional[str] = Field(
+    body: str | None = Field(
         None,
         description="Contents of the issue",
         examples=[
@@ -1003,8 +978,8 @@ class Issue(BaseModel):
             " 10.8, but not 10.9. Maybe a browser bug?"
         ],
     )
-    user: Optional[User]
-    labels: List[Union[str, Labels]] = Field(
+    user: User | None
+    labels: list[str | Labels] = Field(
         ...,
         description=(
             "Labels to associate with this issue; pass one or more label names"
@@ -1014,143 +989,55 @@ class Issue(BaseModel):
         ),
         examples=["bug", "registration"],
     )
-    assignee: Optional[Assignee]
-    assignees: Optional[List[Assignee]] = None
-    milestone: Optional[Milestone]
+    assignee: Assignee | None
+    assignees: list[Assignee] | None = None
+    milestone: Milestone | None
     locked: bool
-    active_lock_reason: Optional[str] = None
+    active_lock_reason: str | None = None
     comments: int
-    pull_request: Optional[PullRequest] = None
-    closed_at: Optional[datetime]
+    pull_request: PullRequest | None = None
+    closed_at: datetime | None
     created_at: datetime
     updated_at: datetime
-    draft: Optional[bool] = None
-    closed_by: Optional[ClosedBy] = None
-    body_html: Optional[str] = None
-    body_text: Optional[str] = None
-    timeline_url: Optional[AnyUrl] = None
-    repository: Optional[Repository] = Field(
+    draft: bool | None = None
+    closed_by: ClosedBy | None = None
+    body_html: str | None = None
+    body_text: str | None = None
+    timeline_url: AnyUrl | None = None
+    repository: Repository | None = Field(
         None, description="A repository on GitHub.", title="Repository"
     )
-    performed_via_github_app: Optional[Optional[PerformedViaGithubApp]] = None
+    performed_via_github_app: PerformedViaGithubApp | None = None
     author_association: AuthorAssociation = Field(
         ...,
         description="How the author is associated with the repository.",
         examples=["OWNER"],
         title="author_association",
     )
-    reactions: Optional[Reactions] = Field(None, title="Reaction Rollup")
-    sub_issues_summary: Optional[SubIssuesSummary] = Field(
+    reactions: Reactions | None = Field(None, title="Reaction Rollup")
+    sub_issues_summary: SubIssuesSummary | None = Field(
         None, title="Sub-issues Summary"
     )
-
-
-class Owner3(BaseModel):
-    name: Optional[str] = None
-    email: Optional[str] = None
-    login: str = Field(..., examples=["octocat"])
-    id: int = Field(..., examples=[1])
-    node_id: str = Field(..., examples=["MDQ6VXNlcjE="])
-    avatar_url: AnyUrl = Field(
-        ..., examples=["https://github.com/images/error/octocat_happy.gif"]
-    )
-    gravatar_id: Optional[str] = Field(
-        ..., examples=["41d064eb2195891e12d0413f63227ea7"]
-    )
-    url: AnyUrl = Field(..., examples=["https://api.github.com/users/octocat"])
-    html_url: AnyUrl = Field(..., examples=["https://github.com/octocat"])
-    followers_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/followers"]
-    )
-    following_url: str = Field(
-        ...,
-        examples=[
-            "https://api.github.com/users/octocat/following{/other_user}"
-        ],
-    )
-    gists_url: str = Field(
-        ..., examples=["https://api.github.com/users/octocat/gists{/gist_id}"]
-    )
-    starred_url: str = Field(
-        ...,
-        examples=[
-            "https://api.github.com/users/octocat/starred{/owner}{/repo}"
-        ],
-    )
-    subscriptions_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/subscriptions"]
-    )
-    organizations_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/orgs"]
-    )
-    repos_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/repos"]
-    )
-    events_url: str = Field(
-        ..., examples=["https://api.github.com/users/octocat/events{/privacy}"]
-    )
-    received_events_url: AnyUrl = Field(
-        ..., examples=["https://api.github.com/users/octocat/received_events"]
-    )
-    type: str = Field(..., examples=["User"])
-    site_admin: bool
-    starred_at: Optional[str] = Field(
-        None, examples=['"2020-07-09T00:17:55Z"']
-    )
-    user_view_type: Optional[str] = Field(None, examples=["public"])
-
-
-class Owner4(BaseModel):
-    description: Optional[str] = Field(
-        None, description="A short description of the enterprise."
-    )
-    html_url: AnyUrl = Field(
-        ..., examples=["https://github.com/enterprises/octo-business"]
-    )
-    website_url: Optional[AnyUrl] = Field(
-        None, description="The enterprise's website URL."
-    )
-    id: int = Field(
-        ..., description="Unique identifier of the enterprise", examples=[42]
-    )
-    node_id: str = Field(..., examples=["MDEwOlJlcG9zaXRvcnkxMjk2MjY5"])
-    name: str = Field(
-        ...,
-        description="The name of the enterprise.",
-        examples=["Octo Business"],
-    )
-    slug: str = Field(
-        ...,
-        description="The slug url identifier for the enterprise.",
-        examples=["octo-business"],
-    )
-    created_at: Optional[datetime] = Field(
-        ..., examples=["2019-01-26T19:01:12Z"]
-    )
-    updated_at: Optional[datetime] = Field(
-        ..., examples=["2019-01-26T19:14:43Z"]
-    )
-    avatar_url: AnyUrl
 
 
 class PerformedViaGithubApp1(BaseModel):
     id: int = Field(
         ..., description="Unique identifier of the GitHub app", examples=[37]
     )
-    slug: Optional[str] = Field(
+    slug: str | None = Field(
         None,
         description="The slug name of the GitHub app",
         examples=["probot-owners"],
     )
     node_id: str = Field(..., examples=["MDExOkludGVncmF0aW9uMQ=="])
-    client_id: Optional[str] = Field(None, examples=['"Iv1.25b5d1e65ffc4022"'])
-    owner: Union[Owner3, Owner4]
+    client_id: str | None = Field(None, examples=['"Iv1.25b5d1e65ffc4022"'])
+    owner: UserOwner | BusinessOwner
     name: str = Field(
         ...,
         description="The name of the GitHub app",
         examples=["Probot Owners"],
     )
-    description: Optional[str] = Field(
+    description: str | None = Field(
         ..., examples=["The description of the app."]
     )
     external_url: AnyUrl = Field(..., examples=["https://example.com"])
@@ -1164,25 +1051,25 @@ class PerformedViaGithubApp1(BaseModel):
         description="The set of permissions for the GitHub app",
         examples=[{"issues": "read", "deployments": "write"}],
     )
-    events: List[str] = Field(
+    events: list[str] = Field(
         ...,
         description="The list of events for the GitHub app",
         examples=["label", "deployment"],
     )
-    installations_count: Optional[int] = Field(
+    installations_count: int | None = Field(
         None,
         description=(
             "The number of installations associated with the GitHub app"
         ),
         examples=[5],
     )
-    client_secret: Optional[str] = Field(
+    client_secret: str | None = Field(
         None, examples=['"1d4b2097ac622ba702d19de498f005747a8b21d3"']
     )
-    webhook_secret: Optional[str] = Field(
+    webhook_secret: str | None = Field(
         None, examples=['"6fba8f2fc8a7e8f2cca5577eddd82ca7586b3b6b"']
     )
-    pem: Optional[str] = Field(None)
+    pem: str | None = Field(None)
 
 
 class Comment(BaseModel):
@@ -1196,17 +1083,17 @@ class Comment(BaseModel):
         ...,
         examples=["https://api.github.com/repositories/42/issues/comments/1"],
     )
-    body: Optional[str] = Field(
+    body: str | None = Field(
         None,
         description="Contents of the issue comment",
         examples=[
             "What version of Safari were you using when you observed this bug?"
         ],
     )
-    body_text: Optional[str] = None
-    body_html: Optional[str] = None
+    body_text: str | None = None
+    body_html: str | None = None
     html_url: AnyUrl
-    user: Optional[User]
+    user: User | None
     created_at: datetime = Field(..., examples=["2011-04-14T16:00:49Z"])
     updated_at: datetime = Field(..., examples=["2011-04-14T16:00:49Z"])
     issue_url: AnyUrl
@@ -1216,22 +1103,22 @@ class Comment(BaseModel):
         examples=["OWNER"],
         title="author_association",
     )
-    performed_via_github_app: Optional[Optional[PerformedViaGithubApp1]] = None
-    reactions: Optional[Reactions] = Field(None, title="Reaction Rollup")
+    performed_via_github_app: PerformedViaGithubApp1 | None = None
+    reactions: Reactions | None = Field(None, title="Reaction Rollup")
 
 
 class Page(BaseModel):
-    page_name: Optional[str] = None
-    title: Optional[str] = None
-    summary: Optional[str] = None
-    action: Optional[str] = None
-    sha: Optional[str] = None
-    html_url: Optional[str] = None
+    page_name: str | None = None
+    title: str | None = None
+    summary: str | None = None
+    action: str | None = None
+    sha: str | None = None
+    html_url: str | None = None
 
 
 class Payload(BaseModel):
-    action: Optional[str] = None
-    issue: Optional[Issue] = Field(
+    action: str | None = None
+    issue: Issue | None = Field(
         None,
         description=(
             "Issues are a great way to keep track of tasks, enhancements, and"
@@ -1239,26 +1126,26 @@ class Payload(BaseModel):
         ),
         title="Issue",
     )
-    comment: Optional[Comment] = Field(
+    comment: Comment | None = Field(
         None,
         description=(
             "Comments provide a way for people to collaborate on an issue."
         ),
         title="Issue Comment",
     )
-    pages: Optional[List[Page]] = None
+    pages: list[Page] | None = None
 
 
-class ModelItem(BaseModel):
+class Event(BaseModel):
     id: str
-    type: Optional[str]
+    type: str | None
     actor: Actor = Field(..., description="Actor", title="Actor")
     repo: Repo
-    org: Optional[Org] = Field(None, description="Actor", title="Actor")
+    org: Org | None = Field(None, description="Actor", title="Actor")
     payload: Payload
     public: bool
-    created_at: Optional[datetime]
+    created_at: datetime | None
 
 
-class Model(BaseModel):
-    __root__: List[ModelItem]
+class Events(RootModel):
+    root: list[Event]
