@@ -1,0 +1,26 @@
+[project]
+name = "github-activity"
+version = "0.1.0"
+description = "A CLI tool to display GitHub user activity"
+authors = [
+    {name = "Rodion Terekhin",email = "rodionterekhin@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp (>=3.11.13,<4.0.0)",
+    "pydantic (>=2.10.6,<3.0.0)"
+]
+
+[tool.poetry]
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+pre-commit = "^4.1.0"
+pylint = "^3.3.4"
+mypy = "^1.15.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
