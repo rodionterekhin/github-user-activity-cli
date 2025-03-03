@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 
 import aiohttp
 import pydantic
+from multidict import CIMultiDictProxy
 
 from .common import get_base_request_headers
 from .consts import BASE_URL, USER_EVENTS
@@ -40,23 +41,33 @@ async def get_user_events(
         raise GithubAPIError("Could not receive data from Github") from e
 
 
+def _get_pages_from_headers(headers: CIMultiDictProxy) -> int:
+    links = headers["link"]
+    (last_link_entry,) = [x for x in links.split(",") if 'rel="last"' in x]
+    last_link_url, _ = last_link_entry.split(";")
+    parse_result = urlparse(last_link_url[1:-1])
+    query_params = parse_result.query.split("&")
+    (last_page_query_param_str,) = [
+        x for x in query_params if re.match("^page=.*", x)
+    ]
+    _, last_page_str = last_page_query_param_str.split("=")
+    return int(last_page_str)
+
+
 async def _get_total_pages(
     session: aiohttp.ClientSession,
     url: str,
     headers: dict,
 ) -> int:
     full_url = f"{url}?per_page={PAGE_SIZE}"
-    async with session.get(full_url, headers=headers) as resp:
-        links = resp.headers["link"]
-        (last_link_entry,) = [x for x in links.split(",") if 'rel="last"' in x]
-        last_link_url, _ = last_link_entry.split(";")
-        parse_result = urlparse(last_link_url[1:-1])
-        query_params = parse_result.query.split("&")
-        (last_page_query_param_str,) = [
-            x for x in query_params if re.match("^page=.*", x)
-        ]
-        _, last_page_str = last_page_query_param_str.split("=")
-        return int(last_page_str)
+    async with session.get(full_url, headers=headers) as response:
+        if 400 <= response.status < 500:
+            raise GithubAPIError(
+                "Could not get event page count. Make sure username is correct"
+            )
+        if response.status >= 500:
+            raise GithubAPIError("Unknown API-side error. Try again later")
+        return _get_pages_from_headers(response.headers)
 
 
 async def _get_page(
@@ -67,4 +78,10 @@ async def _get_page(
 ) -> bytes:
     full_url = f"{url}?page={page_number}&per_page={PAGE_SIZE}"
     async with session.get(full_url, headers=headers) as response:
+        if 400 <= response.status < 500:
+            raise GithubAPIError(
+                "Could not get events. Make sure username is correct"
+            )
+        if response.status >= 500:
+            raise GithubAPIError("Unknown API-side error. Try again later")
         return await response.content.read()
