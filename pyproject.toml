@@ -19,6 +19,9 @@ dependencies = [
 line-length = 79
 preview = true
 
+[tool.isort]
+profile = "black"
+
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
 pre-commit = "^4.1.0"
